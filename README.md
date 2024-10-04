@@ -1,28 +1,102 @@
-Recurrent ANN for Financial Forecasting
-======
 
-- Pulls financial data (historical prices of various indices) from the Yahoo Finance API
-- Constructs a recurrent neural network with an architecture suitable for time-series forecasting
-- Trains the network on that data
-- Displays graphs and output data detailing the results
+# Stock Price Predictor Using Neural Networks
 
+This project is a Python script that uses a neural network to predict stock price movements based on historical data. The code trains a neural network on stock indices (like Apple and S&P 500), evaluates its accuracy, and makes future predictions on price changes.
 
-Output
-------
+## Overview
 
-Output graph of %-change in price over time of various indices, with prediction for the S&P500 in red, actual S&P500 in blue:
-![Output Graph](http://i.imgur.com/sA2g2P7.png "Output Graph")
+The primary objectives of this project are:
+- Load and preprocess historical stock data for specified indices.
+- Train a neural network to predict stock price movements.
+- Evaluate the model's accuracy and loss over time.
+- Generate visualizations comparing the model's predictions to actual stock price changes.
+- Predict the stock price change for the following trading day.
 
-Output graph of neural network training and validation errors over training epochs:
-![Error Graph](http://i.imgur.com/xJExb03.png "Error Graph")
+## Table of Contents
+- [Prerequisites](#prerequisites)
+- [Setup and Installation](#setup-and-installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Script Details](#script-details)
+- [Notes](#notes)
+- [License](#license)
 
-Example output text:
+## Prerequisites
+
+Before running the script, ensure you have the following installed:
+- Python 3.x
+- Necessary Python libraries such as `matplotlib`, `numpy`, and others listed in `requirements.txt`.
+- Custom modules: `datahandler` and `nethandler`.
+
+## Setup and Installation
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/your_username/stock-price-predictor.git
+   cd stock-price-predictor
+   ```
+
+2. **Install Dependencies**
+   Ensure all the required Python packages are installed:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## Configuration
+
+### Input Data Parameters
+- **LAG_DAYS**: Number of days to use as input features for prediction.
+- **startdate**: Start date for downloading the stock data (format: `YYYYMMDD`).
+- **indices**: List of stock symbols to use as input features (e.g., `["AAPL", "^GSPC"]`).
+
+### Neural Network Parameters
+- **HIDDEN**: Number of hidden units in the neural network.
+- **OUTPUT**: Number of output neurons (typically 1 for price change prediction).
+
+### Training Parameters
+- **EPOCHS**: Number of epochs for training the neural network.
+- **LEARNING_RATE**: Learning rate for the training algorithm.
+- **MOMENTUM**: Momentum factor for the training algorithm.
+
+## Usage
+
+To run the script:
+```bash
+python main.py
 ```
-train-errors: [  0.043748  0.041089  0.037072  0.036456  0.035725  0.034317  0.033760  0.032625  0.032160  0.032116  0.031686  0.031163  0.030988  0.030825  0.029538  0.029586  0.029203  0.028406  0.028104  0.027824  0.027243  0.030032]
-valid-errors: [  0.117359  0.045864  0.042122  0.041731  0.043724  0.039824  0.039880  0.038656  0.039171  0.041646  0.043562  0.035770  0.039031  0.039117  0.040060  0.043550  0.039386  0.039182  0.043095  0.043065  0.041201  0.044457]
-Net Topology: 24-12-1
 
-On Fri, Aug 23, 2013 the market will increase.
+This will execute the following steps:
+1. Load the stock data based on the indices provided.
+2. Create and train a neural network model.
+3. Evaluate the model's accuracy and plot results.
+4. Predict stock price change for the next trading day.
 
-53.397% Directional Accuracy
-```
+### Output
+- Two plots are generated and saved as:
+  - **prediction_plot.png**: Comparison of actual vs predicted stock price changes.
+  - **error_plot.png**: Training and validation error over epochs.
+
+### Modules Breakdown
+
+1. **Data Loading** (`dh.DataHandler`): The `DataHandler` class handles the loading and preprocessing of historical stock data. It fetches stock prices, applies lag to create features, and splits the data into training and testing sets.
+
+2. **Neural Network Handling** (`NetHandler`): The `NetHandler` class builds and manages a neural network. It handles training, error calculation, prediction, and model evaluation.
+
+3. **Training and Evaluation**:
+   - The model is trained using the specified parameters (epochs, learning rate, momentum).
+   - Training and validation errors are calculated over epochs, and the results are plotted.
+
+4. **Prediction and Accuracy**:
+   - After training, the model makes predictions on the test data.
+   - The script calculates the directional accuracy — the percentage of times the model correctly predicted the direction of stock price change.
+   - The prediction for the next trading day's price change is also computed.
+
+## Notes
+
+- **Data Handling**: Ensure that `datahandler` and `nethandler` are properly implemented and imported. The script assumes these modules handle data processing and neural network operations.
+- **Hyperparameter Tuning**: The neural network parameters (like `HIDDEN`, `LEARNING_RATE`, etc.) can be adjusted based on the data and desired performance.
+- **Plot Generation**: Generated plots for actual vs. predicted values and error over epochs are saved automatically in the project directory.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
